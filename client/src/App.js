@@ -1,16 +1,22 @@
-import React, { useState, Fragment } from 'react';
+import React from 'react';
+
+import useLocalStorage from './hooks/useLocalStorage';
+
+import { ContactsProvider } from './contexts/ContactsProvider';
 
 import Login from './components/Login';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
-  const [id, setId] = useState();
+  const [id, setId] = useLocalStorage('id');
 
-  return (
-    <Fragment>
-      {id}
-      <Login onIdSubmit={setId} />
-    </Fragment>
+  const dashboard = (
+    <ContactsProvider>
+      <Dashboard id={id} />
+    </ContactsProvider>
   );
+
+  return id ? dashboard : <Login onIdSubmit={setId} />;
 };
 
 export default App;
